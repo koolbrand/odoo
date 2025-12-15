@@ -15,6 +15,7 @@ services:
       - "db"
     networks:
       - odoo_network
+      - kool-net
     labels:
       - "kool.name=Odoo"
   nginx:
@@ -72,6 +73,9 @@ services:
 networks:
   odoo_network:
     driver: bridge
+
+  kool-net:
+    external: true
 
 volumes:
   odoo-web-data:
