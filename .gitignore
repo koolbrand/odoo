@@ -3,3 +3,4 @@ odoo-web-data/
 *.pyc
 __pycache__/
 .env
+certbot/
