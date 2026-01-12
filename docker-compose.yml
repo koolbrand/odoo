@@ -3,11 +3,7 @@ services:
     container_name: odoo
     build: .
     restart: always
-    command: --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
-    environment:
-      - HOST=db
-      - USER=odoo
-      - PASSWORD=odoo
+    command: --addons-path=/mnt/extra-addons --db_host=db --db_port=5432 --db_user=odoo --db_password=odoo
     volumes:
       - ./addons:/mnt/extra-addons/:rw
       - ./config/odoo:/etc/odoo/:rw
