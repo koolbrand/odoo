@@ -1,4 +1,3 @@
-version: '3'
 services:
   odoo:
     container_name: odoo
@@ -8,44 +7,15 @@ services:
     volumes:
       - ./addons:/mnt/extra-addons/:rw
       - ./config/odoo:/etc/odoo/:rw
-      - ./odoo-web-data:/var/lib/odoo/:rw
+      - odoo-web-data:/var/lib/odoo/:rw
     ports:
       - "8069:8069"
     depends_on:
       - "db"
     networks:
       - odoo_network
-      - kool-net
     labels:
-      - "kool.name=Odoo"
-  odoo-proxy:
-    container_name: odoo-proxy
-    image: nginx:latest
-    restart: unless-stopped
-    ports:
-      - 8090:443
-    volumes:
-      - ./config/nginx/conf:/etc/nginx/conf.d/:rw
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    depends_on:
-      - "odoo"
-    networks:
-      - odoo_network
-    labels:
-      - "kool.hide=true"
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email admin@koolgrowth.com -d odoo.koolgrowth.com --agree-tos
-    depends_on:
-      - odoo-proxy
-    networks:
-      - odoo_network
-    labels:
-      - "kool.hide=true"
+      - "coolify.managed=true"
 
   db:
     image: postgres:13
@@ -56,10 +26,8 @@ services:
       - POSTGRES_USER=odoo
       - POSTGRES_DB=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
-    ports:
-      - "127.0.0.1:9432:5432"
     volumes:
-      - ./odoo-db-data:/var/lib/postgresql/data/pgdata
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
     networks:
       - odoo_network
     logging:
@@ -67,15 +35,10 @@ services:
       options:
         max-size: "30m"
         max-file: "10"
-    labels:
-      - "kool.hide=true"
 
 networks:
   odoo_network:
     driver: bridge
-
-  kool-net:
-    external: true
 
 volumes:
   odoo-web-data:
