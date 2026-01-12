@@ -4,6 +4,10 @@ services:
     build: .
     restart: always
     command: --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
     volumes:
       - ./addons:/mnt/extra-addons/:rw
       - ./config/odoo:/etc/odoo/:rw
