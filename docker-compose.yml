@@ -2,7 +2,12 @@ services:
   odoo:
     container_name: odoo
     build: .
-    restart: always
+    command: --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons --xmlrpc-port=8069
+    environment:
+      - HOST=db
+      - PORT=5432
+      - USER=odoo
+      - PASSWORD=odoo
     volumes:
       - ./addons:/mnt/extra-addons/:rw
       - ./config/odoo:/etc/odoo/:rw
