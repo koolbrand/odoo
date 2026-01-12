@@ -4,6 +4,11 @@ services:
     build: .
     restart: always
     command: --addons-path=/mnt/extra-addons --db_host=db --db_port=5432 --db_user=odoo --db_password=odoo
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=odoo
+      - PGPASSWORD=odoo
     volumes:
       - ./addons:/mnt/extra-addons/:rw
       - ./config/odoo:/etc/odoo/:rw
