@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_hr_expense_tickets" model="ir.actions.report">
+        <field name="name">Informe de tickets</field>
+        <field name="model">hr.expense</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoo_ocr_custom.report_expense_tickets</field>
+        <field name="report_file">odoo_ocr_custom.report_expense_tickets</field>
+        <field name="print_report_name">'Informe de tickets - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="hr_expense.model_hr_expense"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_expense_tickets">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="attachments" t-value="o.env['ir.attachment'].search([('res_model', '=', 'hr.expense'), ('res_id', '=', o.id), ('mimetype', 'ilike', 'image/')])"/>
+                <t t-foreach="attachments" t-as="attachment">
+                    <div class="page" style="text-align: center; page-break-after: always; padding: 0; margin: 0;">
+                        <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+                            <img t-att-src="image_data_uri(attachment.datas)" style="max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; margin: 0 auto;"/>
+                        </div>
+                    </div>
+                </t>
+                <t t-if="not attachments">
+                    <div class="page">
+                        <div style="text-align: center; margin-top: 50px;">
+                            <h3>No hay imágenes adjuntas para el gasto: <span t-out="o.name"/></h3>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
