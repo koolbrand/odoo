@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="koolbrand_layout" model="report.layout">
+            <field name="name">Koolbrand Layout</field>
+            <field name="view_id" ref="web.external_layout_standard"/>
+            <field name="image">/koolbrand_invoice_layout/static/src/img/preview.png</field>
+            <field name="pdf">/koolbrand_invoice_layout/static/src/pdf/preview.pdf</field>
+        </record>
+    </data>
+</odoo>
